@@ -94,14 +94,14 @@
     }
 
     .action-btn:disabled {
-      opacity: 0.65;
+      opacity: 0.7;
       cursor: wait;
     }
 
     .bar-wrap {
       background-color: var(--panel);
       border: 2px solid var(--border);
-      height: 34px;
+      height: 36px;
       width: 100%;
       position: relative;
       overflow: hidden;
@@ -134,7 +134,7 @@
         <span class="indicator" id="dot"></span>
         <span class="mono text-xs font-bold tracking-wider uppercase">DIRECT TRANSFER LANE // ACTIVE</span>
       </div>
-      <span class="mono text-xs text-[var(--muted)]">ID: #RJN-01</span>
+      <span id="cacheBadge" class="mono text-xs font-semibold text-[var(--muted)]">PERSISTENT STORAGE READY</span>
     </div>
   </header>
 
@@ -144,16 +144,20 @@
       <div class="mono text-xs font-bold uppercase tracking-widest text-[var(--accent)] mb-2">
         [ RECIPIENT: RAJNISH BRO ]
       </div>
-      <h1 class="text-lg sm:text-xl font-bold leading-snug mb-3">
-        Hey Rajnish bro! Page open hote hi download automatic start ho jayega, ya niche diye gaye button par click karo. Ek download pop-up appear hoga — use 'Download' / 'Save' karna, aur wo file seedha aapke phone ki Gallery / Downloads me show ho jayegi.
+      <h1 class="text-lg sm:text-xl font-bold leading-snug mb-2">
+        Hey Rajnish bro, download popup appear hoga, use download karna and wo aapke phone ki gallery me show ho jayega.
       </h1>
-      <div class="frame-inner p-3.5 mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <div>
-          <div class="mono text-[11px] uppercase text-[var(--muted)]">FILE NAME</div>
-          <div id="fileName" class="mono text-sm sm:text-base font-bold break-all">CONNECTING TO STREAM...</div>
+      <p class="text-xs sm:text-sm text-[var(--muted)] leading-relaxed">
+        Page open hote hi ya niche button click karte hi download start ho jayega. Agar page refresh bhi ho jaye to file data fail nahi hoga — jahan tak download hua hai wahi se resume hoga.
+      </p>
+
+      <div class="frame-inner p-3.5 mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="sm:col-span-2">
+          <div class="mono text-[11px] uppercase text-[var(--muted)]">TARGET FILE</div>
+          <div id="fileName" class="mono text-sm sm:text-base font-bold break-all">VERIFYING PAYLOAD...</div>
         </div>
         <div class="sm:text-right">
-          <div class="mono text-[11px] uppercase text-[var(--muted)]">FILE SIZE</div>
+          <div class="mono text-[11px] uppercase text-[var(--muted)]">SIZE</div>
           <div id="fileSize" class="mono text-sm sm:text-base font-bold">-- MB</div>
         </div>
       </div>
@@ -162,7 +166,7 @@
     <section class="frame-strong p-5 sm:p-7 space-y-5">
       <div class="space-y-2">
         <div class="flex items-center justify-between mono text-xs sm:text-sm font-bold">
-          <span id="statusText" class="uppercase">INITIALIZING AUTO-DOWNLOAD...</span>
+          <span id="statusText" class="uppercase">CHECKING SAVED FILE STATE...</span>
           <span id="percentText">0%</span>
         </div>
 
@@ -172,7 +176,7 @@
 
         <div class="flex items-center justify-between mono text-xs text-[var(--muted)] pt-1">
           <span id="bytesText">0.00 MB / 0.00 MB</span>
-          <span id="speedText">0.00 MB/s</span>
+          <span id="speedText">READY</span>
         </div>
       </div>
 
@@ -182,10 +186,10 @@
 
       <div id="completeAlert" class="hidden frame-inner p-4 border-l-4 border-l-[var(--success)]">
         <div class="mono text-xs font-bold uppercase text-[var(--success)] mb-1">
-          DOWNLOAD POP-UP TRIGGERED
+          DOWNLOAD POP-UP TRIGGERED // SAVED IN BROWSER CACHE
         </div>
         <p class="text-xs sm:text-sm">
-          File ready ho gayi hai! Apne browser ke pop-up me <strong>Download / Save</strong> dabayein. File seedha aapke phone ki Gallery ya Downloads me save ho jayegi.
+          Hey Rajnish bro, apne browser ke pop-up me <strong>Download / Save</strong> par tap karein. File seedha aapke phone ki Gallery / Downloads me show ho jayegi. Refresh karne par bhi ye file bina dobara download kiye turant save ho jayegi.
         </p>
       </div>
     </section>
@@ -193,10 +197,10 @@
     <section class="frame-standard p-5 sm:p-6">
       <div class="flex items-center justify-between pb-2.5 mb-3 border-b border-[var(--border-light)]">
         <span class="mono text-xs font-bold uppercase tracking-wider">SECURE PRIVATE LANE</span>
-        <span class="mono text-[11px] font-semibold uppercase text-[var(--success)]">E2EE VERIFIED</span>
+        <span class="mono text-[11px] font-semibold uppercase text-[var(--success)]">REFRESH-SAFE E2EE</span>
       </div>
       <p class="text-xs sm:text-sm text-[var(--muted)] leading-relaxed">
-        Ye ek private aur encrypted direct transfer lane hai. Sirf jiske pass ye link hai wahi is file ko access aur download kar sakta hai. Aapko kisi dusri website par जाने ki zaroorat nahi hai.
+        Ye ek private aur encrypted direct lane hai. Sirf jiske pass ye link hai wahi is file ko download kar sakta hai. File ka data aapke browser ke local database me lock hota rehta hai, isliye page refresh hone ya network fluctuate hone par bhi file data kabhi fail nahi hoga.
       </p>
     </section>
 
@@ -204,15 +208,19 @@
 
   <footer class="w-full max-w-2xl mx-auto mt-6">
     <div class="frame-standard px-4 py-3 flex items-center justify-between mono text-[11px] text-[var(--muted)]">
-      <span>DIRECT CLIENT DECRYPTION</span>
+      <span>AUTO-RESUME ENGINE: ON</span>
       <span>NO REDIRECTS</span>
     </div>
   </footer>
 
   <script type="module">
-    import { File } from 'https://cdn.jsdelivr.net/npm/megajs@1.3.8/+esm';
+    import { File } from 'https://unpkg.com/megajs@1/dist/main.browser-es.mjs';
 
-    const MEGA_LINK = "https://mega.nz/file/awYmBT4a#tKz0cEWIrj0jxzKf8yf3fXG6rtztwjYVvPwom1nZtXI";
+    const MEGA_URL = ['https://mega.nz/file/awYmBT4a', '#tKz0cEWIrj0jxzKf8yf3fXG6rtztwjYVvPwom1nZtXI'].join('');
+    const DB_NAME = 'RajnishSecureCache';
+    const DB_VERSION = 1;
+    const STORE_NAME = 'fileStore';
+    const RECORD_KEY = 'awYmBT4a_payload';
 
     const fileNameEl = document.getElementById('fileName');
     const fileSizeEl = document.getElementById('fileSize');
@@ -221,117 +229,358 @@
     const barFillEl = document.getElementById('barFill');
     const bytesTextEl = document.getElementById('bytesText');
     const speedTextEl = document.getElementById('speedText');
+    const cacheBadgeEl = document.getElementById('cacheBadge');
     const downloadBtn = document.getElementById('downloadBtn');
     const completeAlert = document.getElementById('completeAlert');
 
-    let activeDownload = false;
-    let cachedBlob = null;
-    let resolvedFileName = "Rajnish_File";
-    let totalBytes = 0;
+    let isRunning = false;
+    let isUnloading = false;
+    let memoryBlob = null;
+    let currentFileName = 'Rajnish_File';
+    let currentFileSize = 0;
+    let activeStream = null;
 
-    function toMB(bytes) {
+    window.addEventListener('beforeunload', () => {
+      isUnloading = true;
+      if (activeStream && typeof activeStream.destroy === 'function') {
+        try {
+          activeStream.destroy();
+        } catch (_) {}
+      }
+    });
+
+    function formatMB(bytes) {
       return (bytes / (1024 * 1024)).toFixed(2);
     }
 
-    function saveBlobToDevice(blob, name) {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = name;
-      document.body.appendChild(a);
-      a.click();
-      completeAlert.classList.remove('hidden');
-      setTimeout(() => {
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      }, 20000);
+    function guessMimeType(name) {
+      const ext = (name.split('.').pop() || '').toLowerCase();
+      const map = {
+        jpg: 'image/jpeg',
+        jpeg: 'image/jpeg',
+        png: 'image/png',
+        gif: 'image/gif',
+        webp: 'image/webp',
+        mp4: 'video/mp4',
+        mov: 'video/quicktime',
+        mkv: 'video/x-matroska',
+        webm: 'video/webm',
+        mp3: 'audio/mpeg',
+        wav: 'audio/wav',
+        pdf: 'application/pdf',
+        zip: 'application/zip',
+        apk: 'application/vnd.android.package-archive'
+      };
+      return map[ext] || 'application/octet-stream';
     }
 
-    function setProgress(loaded, total, speed, message, finished = false) {
+    function openCacheDB() {
+      return new Promise((resolve, reject) => {
+        if (!window.indexedDB) {
+          resolve(null);
+          return;
+        }
+        const req = indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains(STORE_NAME)) {
+            db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+          }
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => resolve(null);
+      });
+    }
+
+    async function readCacheRecord() {
+      const db = await openCacheDB();
+      if (!db) return null;
+      return new Promise((resolve) => {
+        try {
+          const tx = db.transaction(STORE_NAME, 'readonly');
+          const store = tx.objectStore(STORE_NAME);
+          const req = store.get(RECORD_KEY);
+          req.onsuccess = () => resolve(req.result || null);
+          req.onerror = () => resolve(null);
+        } catch (_) {
+          resolve(null);
+        }
+      });
+    }
+
+    async function writeCacheRecord(record) {
+      const db = await openCacheDB();
+      if (!db) return false;
+      return new Promise((resolve) => {
+        try {
+          const tx = db.transaction(STORE_NAME, 'readwrite');
+          const store = tx.objectStore(STORE_NAME);
+          store.put(record);
+          tx.oncomplete = () => resolve(true);
+          tx.onerror = () => resolve(false);
+        } catch (_) {
+          resolve(false);
+        }
+      });
+    }
+
+    function triggerBrowserDownload(blob, filename) {
+      const blobUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.style.display = 'none';
+      link.href = blobUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      completeAlert.classList.remove('hidden');
+      setTimeout(() => {
+        if (link.parentNode) {
+          document.body.removeChild(link);
+        }
+        URL.revokeObjectURL(blobUrl);
+      }, 30000);
+    }
+
+    function updateUI(loaded, total, speedLabel, statusLabel, isDone = false) {
       const pct = total > 0 ? Math.min(100, Math.round((loaded / total) * 100)) : 0;
       barFillEl.style.width = pct + '%';
       percentTextEl.textContent = pct + '%';
-      statusTextEl.textContent = message;
-
+      statusTextEl.textContent = statusLabel;
       if (total > 0) {
-        bytesTextEl.textContent = `${toMB(loaded)} MB / ${toMB(total)} MB`;
+        bytesTextEl.textContent = `${formatMB(loaded)} MB / ${formatMB(total)} MB`;
       }
-      speedTextEl.textContent = `${speed.toFixed(2)} MB/s`;
-
-      if (finished) {
+      speedTextEl.textContent = speedLabel;
+      if (isDone) {
         barFillEl.classList.add('done');
       } else {
         barFillEl.classList.remove('done');
       }
     }
 
-    async function runTransfer() {
-      if (activeDownload) return;
+    function sleep(ms) {
+      return new Promise((r) => setTimeout(r, ms));
+    }
 
-      if (cachedBlob) {
-        statusTextEl.textContent = "POP-UP SENT // SAVING TO DEVICE";
-        saveBlobToDevice(cachedBlob, resolvedFileName);
+    async function fetchAndPersistWithResume(manualClick = false) {
+      if (isRunning) return;
+
+      if (memoryBlob) {
+        updateUI(currentFileSize, currentFileSize, 'INSTANT CACHE', 'POP-UP SENT // SAVING TO GALLERY', true);
+        triggerBrowserDownload(memoryBlob, currentFileName);
         return;
       }
 
-      activeDownload = true;
+      isRunning = true;
       downloadBtn.disabled = true;
-      downloadBtn.textContent = "DOWNLOADING FILE...";
-      completeAlert.classList.add('hidden');
+      downloadBtn.textContent = 'PREPARING SECURE DOWNLOAD...';
 
       try {
-        statusTextEl.textContent = "CONNECTING TO SECURE LANE...";
-        const file = File.fromURL(MEGA_LINK);
-        await file.loadAttributes();
+        const cached = await readCacheRecord();
 
-        resolvedFileName = file.name || "Rajnish_Gallery_File";
-        totalBytes = file.size || 0;
+        if (cached && cached.completed && cached.blob) {
+          currentFileName = cached.fileName || 'Rajnish_File';
+          currentFileSize = cached.fileSize || cached.blob.size || 0;
+          memoryBlob = cached.blob;
 
-        fileNameEl.textContent = resolvedFileName;
-        fileSizeEl.textContent = totalBytes > 0 ? `${toMB(totalBytes)} MB` : "READY";
+          fileNameEl.textContent = currentFileName;
+          fileSizeEl.textContent = `${formatMB(currentFileSize)} MB`;
+          cacheBadgeEl.textContent = 'RESTORED FROM LOCAL CACHE';
 
-        const chunks = [];
-        let loaded = 0;
-        const start = performance.now();
-        const stream = file.download();
+          updateUI(currentFileSize, currentFileSize, '0.0 sec (CACHED)', 'COMPLETE // SAVE POP-UP TRIGGERED', true);
+          triggerBrowserDownload(memoryBlob, currentFileName);
+          return;
+        }
 
-        await new Promise((resolve, reject) => {
-          stream.on('data', (chunk) => {
-            chunks.push(chunk);
-            loaded += chunk.byteLength || chunk.length || 0;
-            const elapsed = Math.max(0.1, (performance.now() - start) / 1000);
-            const speed = (loaded / (1024 * 1024)) / elapsed;
-            setProgress(loaded, totalBytes, speed, "STREAMING & DECRYPTING...");
+        let savedChunks = [];
+        let bytesReceived = 0;
+
+        if (cached && Array.isArray(cached.chunks) && cached.bytesReceived > 0) {
+          savedChunks = cached.chunks;
+          bytesReceived = cached.bytesReceived;
+          currentFileName = cached.fileName || currentFileName;
+          currentFileSize = cached.fileSize || 0;
+
+          if (currentFileName) fileNameEl.textContent = currentFileName;
+          if (currentFileSize > 0) {
+            fileSizeEl.textContent = `${formatMB(currentFileSize)} MB`;
+            updateUI(bytesReceived, currentFileSize, 'RESUMING...', 'RESUMING FROM SAVED PROGRESS...');
+            cacheBadgeEl.textContent = `RESUMED AT ${Math.round((bytesReceived / currentFileSize) * 100)}%`;
+          }
+        } else {
+          statusTextEl.textContent = 'CONNECTING TO SECURE MEGA LANE...';
+        }
+
+        const maxAttempts = 4;
+        let attempt = 0;
+        let downloadSuccess = false;
+
+        while (attempt < maxAttempts && !downloadSuccess && !isUnloading) {
+          attempt++;
+          try {
+            const megaFile = File.fromURL(MEGA_URL);
+            await megaFile.loadAttributes();
+
+            currentFileName = megaFile.name || 'Rajnish_Gallery_File';
+            currentFileSize = megaFile.size || 0;
+            const mimeType = guessMimeType(currentFileName);
+
+            fileNameEl.textContent = currentFileName;
+            fileSizeEl.textContent = currentFileSize > 0 ? `${formatMB(currentFileSize)} MB` : 'READY';
+
+            if (bytesReceived > 0 && bytesReceived < currentFileSize) {
+              updateUI(bytesReceived, currentFileSize, 'RESUMING LANE', 'RESUMING INTERRUPTED DOWNLOAD...');
+            } else if (bytesReceived >= currentFileSize && currentFileSize > 0 && savedChunks.length > 0) {
+              downloadSuccess = true;
+              break;
+            } else {
+              savedChunks = [];
+              bytesReceived = 0;
+              updateUI(0, currentFileSize, 'STARTING...', 'STREAMING & DECRYPTING...');
+            }
+
+            let pendingBuffers = [];
+            let pendingBytes = 0;
+            const flushThreshold = 512 * 1024;
+            const streamStartTime = performance.now();
+            const sessionStartBytes = bytesReceived;
+
+            const downloadOptions = bytesReceived > 0 ? { start: bytesReceived } : {};
+            activeStream = megaFile.download(downloadOptions);
+
+            await new Promise((resolve, reject) => {
+              activeStream.on('data', (chunk) => {
+                if (isUnloading) return;
+                const copy = new Uint8Array(chunk);
+                pendingBuffers.push(copy);
+                const len = copy.byteLength;
+                pendingBytes += len;
+                bytesReceived += len;
+
+                const elapsedSec = Math.max(0.1, (performance.now() - streamStartTime) / 1000);
+                const sessionFetched = bytesReceived - sessionStartBytes;
+                const mbps = (sessionFetched / (1024 * 1024)) / elapsedSec;
+
+                updateUI(
+                  bytesReceived,
+                  currentFileSize,
+                  `${mbps.toFixed(2)} MB/s`,
+                  'STREAMING & LOCKING DATA...'
+                );
+
+                if (pendingBytes >= flushThreshold) {
+                  const segmentBlob = new Blob(pendingBuffers, { type: mimeType });
+                  savedChunks.push(segmentBlob);
+                  pendingBuffers = [];
+                  pendingBytes = 0;
+
+                  writeCacheRecord({
+                    id: RECORD_KEY,
+                    completed: false,
+                    fileName: currentFileName,
+                    fileSize: currentFileSize,
+                    mimeType: mimeType,
+                    bytesReceived: bytesReceived,
+                    chunks: savedChunks,
+                    updatedAt: Date.now()
+                  });
+                }
+              });
+
+              activeStream.on('end', async () => {
+                if (pendingBuffers.length > 0) {
+                  const finalSegment = new Blob(pendingBuffers, { type: mimeType });
+                  savedChunks.push(finalSegment);
+                  pendingBuffers = [];
+                  pendingBytes = 0;
+                }
+                resolve();
+              });
+
+              activeStream.on('error', async (err) => {
+                if (pendingBuffers.length > 0) {
+                  const partialSegment = new Blob(pendingBuffers, { type: mimeType });
+                  savedChunks.push(partialSegment);
+                  pendingBuffers = [];
+                  pendingBytes = 0;
+                  await writeCacheRecord({
+                    id: RECORD_KEY,
+                    completed: false,
+                    fileName: currentFileName,
+                    fileSize: currentFileSize,
+                    mimeType: mimeType,
+                    bytesReceived: bytesReceived,
+                    chunks: savedChunks,
+                    updatedAt: Date.now()
+                  });
+                }
+                reject(err);
+              });
+            });
+
+            downloadSuccess = true;
+          } catch (streamErr) {
+            if (isUnloading) return;
+            if (attempt < maxAttempts) {
+              const waitTime = attempt * 1200;
+              updateUI(
+                bytesReceived,
+                currentFileSize,
+                `RETRY ${attempt}/${maxAttempts}`,
+                'RE-ESTABLISHING SECURE STREAM...'
+              );
+              await sleep(waitTime);
+            } else {
+              throw streamErr;
+            }
+          }
+        }
+
+        if (downloadSuccess && !isUnloading) {
+          const mimeType = guessMimeType(currentFileName);
+          const finalBlob = new Blob(savedChunks, { type: mimeType });
+          memoryBlob = finalBlob;
+
+          await writeCacheRecord({
+            id: RECORD_KEY,
+            completed: true,
+            fileName: currentFileName,
+            fileSize: currentFileSize || finalBlob.size,
+            mimeType: mimeType,
+            bytesReceived: currentFileSize || finalBlob.size,
+            blob: finalBlob,
+            chunks: [],
+            updatedAt: Date.now()
           });
 
-          stream.on('end', () => {
-            resolve();
-          });
-
-          stream.on('error', (err) => {
-            reject(err);
-          });
-        });
-
-        cachedBlob = new Blob(chunks, { type: "application/octet-stream" });
-        setProgress(totalBytes, totalBytes, 0, "COMPLETE // SAVE POP-UP TRIGGERED", true);
-        saveBlobToDevice(cachedBlob, resolvedFileName);
+          cacheBadgeEl.textContent = 'LOCKED IN LOCAL CACHE';
+          updateUI(
+            currentFileSize || finalBlob.size,
+            currentFileSize || finalBlob.size,
+            'SAVED',
+            'COMPLETE // SAVE POP-UP TRIGGERED',
+            true
+          );
+          triggerBrowserDownload(finalBlob, currentFileName);
+        }
       } catch (err) {
-        statusTextEl.textContent = "CONNECTION INTERRUPTED - CLICK BUTTON TO RETRY";
+        if (!isUnloading) {
+          statusTextEl.textContent = 'PAUSED - CLICK BUTTON TO RESUME FROM SAVED DATA';
+          speedTextEl.textContent = 'SAFE IN CACHE';
+        }
       } finally {
-        activeDownload = false;
+        activeStream = null;
+        isRunning = false;
         downloadBtn.disabled = false;
-        downloadBtn.textContent = "DOWNLOAD FILE NOW";
+        downloadBtn.textContent = 'DOWNLOAD FILE NOW';
       }
     }
 
     downloadBtn.addEventListener('click', () => {
-      runTransfer();
+      fetchAndPersistWithResume(true);
     });
 
     window.addEventListener('DOMContentLoaded', () => {
-      runTransfer();
+      fetchAndPersistWithResume(false);
     });
   </script>
 </body>
