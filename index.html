@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PRIVATE TRANSFER // RAJNISH</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      border-radius: 0px !important;
+      box-shadow: none !important;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #F4F4F2;
+      --surface: #FFFFFF;
+      --panel: #EAEAE6;
+      --text: #111111;
+      --muted: #5A5A55;
+      --border: #111111;
+      --border-light: #C8C8C2;
+      --accent: #0044FF;
+      --accent-hover: #0033CC;
+      --accent-text: #FFFFFF;
+      --success: #007A3D;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0C0D0E;
+        --surface: #141618;
+        --panel: #1D2024;
+        --text: #F0F2F5;
+        --muted: #8E959E;
+        --border: #F0F2F5;
+        --border-light: #2C3137;
+        --accent: #2563EB;
+        --accent-hover: #1D4ED8;
+        --accent-text: #FFFFFF;
+        --success: #10B981;
+      }
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .mono {
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .frame-strong {
+      background-color: var(--surface);
+      border: 2px solid var(--border);
+    }
+
+    .frame-standard {
+      background-color: var(--surface);
+      border: 1px solid var(--border-light);
+    }
+
+    .frame-inner {
+      background-color: var(--panel);
+      border: 1px solid var(--border-light);
+    }
+
+    .action-btn {
+      background-color: var(--accent);
+      color: var(--accent-text);
+      border: 2px solid var(--border);
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: background-color 0.12s ease, transform 0.08s ease;
+    }
+
+    .action-btn:hover:not(:disabled) {
+      background-color: var(--accent-hover);
+    }
+
+    .action-btn:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
+    .action-btn:disabled {
+      opacity: 0.65;
+      cursor: wait;
+    }
+
+    .bar-wrap {
+      background-color: var(--panel);
+      border: 2px solid var(--border);
+      height: 34px;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      background-color: var(--accent);
+      height: 100%;
+      width: 0%;
+      transition: width 0.12s linear;
+    }
+
+    .bar-fill.done {
+      background-color: var(--success);
+    }
+
+    .indicator {
+      width: 10px;
+      height: 10px;
+      background-color: var(--success);
+      display: inline-block;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-4 sm:p-6 md:p-10">
+
+  <header class="w-full max-w-2xl mx-auto mb-6">
+    <div class="frame-standard px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <span class="indicator" id="dot"></span>
+        <span class="mono text-xs font-bold tracking-wider uppercase">DIRECT TRANSFER LANE // ACTIVE</span>
+      </div>
+      <span class="mono text-xs text-[var(--muted)]">ID: #RJN-01</span>
+    </div>
+  </header>
+
+  <main class="w-full max-w-2xl mx-auto flex-grow flex flex-col justify-center space-y-5">
+
+    <section class="frame-strong p-5 sm:p-7">
+      <div class="mono text-xs font-bold uppercase tracking-widest text-[var(--accent)] mb-2">
+        [ RECIPIENT: RAJNISH BRO ]
+      </div>
+      <h1 class="text-lg sm:text-xl font-bold leading-snug mb-3">
+        Hey Rajnish bro! Page open hote hi download automatic start ho jayega, ya niche diye gaye button par click karo. Ek download pop-up appear hoga — use 'Download' / 'Save' karna, aur wo file seedha aapke phone ki Gallery / Downloads me show ho jayegi.
+      </h1>
+      <div class="frame-inner p-3.5 mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div>
+          <div class="mono text-[11px] uppercase text-[var(--muted)]">FILE NAME</div>
+          <div id="fileName" class="mono text-sm sm:text-base font-bold break-all">CONNECTING TO STREAM...</div>
+        </div>
+        <div class="sm:text-right">
+          <div class="mono text-[11px] uppercase text-[var(--muted)]">FILE SIZE</div>
+          <div id="fileSize" class="mono text-sm sm:text-base font-bold">-- MB</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="frame-strong p-5 sm:p-7 space-y-5">
+      <div class="space-y-2">
+        <div class="flex items-center justify-between mono text-xs sm:text-sm font-bold">
+          <span id="statusText" class="uppercase">INITIALIZING AUTO-DOWNLOAD...</span>
+          <span id="percentText">0%</span>
+        </div>
+
+        <div class="bar-wrap">
+          <div id="barFill" class="bar-fill"></div>
+        </div>
+
+        <div class="flex items-center justify-between mono text-xs text-[var(--muted)] pt-1">
+          <span id="bytesText">0.00 MB / 0.00 MB</span>
+          <span id="speedText">0.00 MB/s</span>
+        </div>
+      </div>
+
+      <button id="downloadBtn" type="button" class="action-btn w-full py-4 sm:py-5 px-6 text-base sm:text-lg text-center">
+        DOWNLOAD FILE NOW
+      </button>
+
+      <div id="completeAlert" class="hidden frame-inner p-4 border-l-4 border-l-[var(--success)]">
+        <div class="mono text-xs font-bold uppercase text-[var(--success)] mb-1">
+          DOWNLOAD POP-UP TRIGGERED
+        </div>
+        <p class="text-xs sm:text-sm">
+          File ready ho gayi hai! Apne browser ke pop-up me <strong>Download / Save</strong> dabayein. File seedha aapke phone ki Gallery ya Downloads me save ho jayegi.
+        </p>
+      </div>
+    </section>
+
+    <section class="frame-standard p-5 sm:p-6">
+      <div class="flex items-center justify-between pb-2.5 mb-3 border-b border-[var(--border-light)]">
+        <span class="mono text-xs font-bold uppercase tracking-wider">SECURE PRIVATE LANE</span>
+        <span class="mono text-[11px] font-semibold uppercase text-[var(--success)]">E2EE VERIFIED</span>
+      </div>
+      <p class="text-xs sm:text-sm text-[var(--muted)] leading-relaxed">
+        Ye ek private aur encrypted direct transfer lane hai. Sirf jiske pass ye link hai wahi is file ko access aur download kar sakta hai. Aapko kisi dusri website par जाने ki zaroorat nahi hai.
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="w-full max-w-2xl mx-auto mt-6">
+    <div class="frame-standard px-4 py-3 flex items-center justify-between mono text-[11px] text-[var(--muted)]">
+      <span>DIRECT CLIENT DECRYPTION</span>
+      <span>NO REDIRECTS</span>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { File } from 'https://cdn.jsdelivr.net/npm/megajs@1.3.8/+esm';
+
+    const MEGA_LINK = "https://mega.nz/file/awYmBT4a#tKz0cEWIrj0jxzKf8yf3fXG6rtztwjYVvPwom1nZtXI";
+
+    const fileNameEl = document.getElementById('fileName');
+    const fileSizeEl = document.getElementById('fileSize');
+    const statusTextEl = document.getElementById('statusText');
+    const percentTextEl = document.getElementById('percentText');
+    const barFillEl = document.getElementById('barFill');
+    const bytesTextEl = document.getElementById('bytesText');
+    const speedTextEl = document.getElementById('speedText');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const completeAlert = document.getElementById('completeAlert');
+
+    let activeDownload = false;
+    let cachedBlob = null;
+    let resolvedFileName = "Rajnish_File";
+    let totalBytes = 0;
+
+    function toMB(bytes) {
+      return (bytes / (1024 * 1024)).toFixed(2);
+    }
+
+    function saveBlobToDevice(blob, name) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      completeAlert.classList.remove('hidden');
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 20000);
+    }
+
+    function setProgress(loaded, total, speed, message, finished = false) {
+      const pct = total > 0 ? Math.min(100, Math.round((loaded / total) * 100)) : 0;
+      barFillEl.style.width = pct + '%';
+      percentTextEl.textContent = pct + '%';
+      statusTextEl.textContent = message;
+
+      if (total > 0) {
+        bytesTextEl.textContent = `${toMB(loaded)} MB / ${toMB(total)} MB`;
+      }
+      speedTextEl.textContent = `${speed.toFixed(2)} MB/s`;
+
+      if (finished) {
+        barFillEl.classList.add('done');
+      } else {
+        barFillEl.classList.remove('done');
+      }
+    }
+
+    async function runTransfer() {
+      if (activeDownload) return;
+
+      if (cachedBlob) {
+        statusTextEl.textContent = "POP-UP SENT // SAVING TO DEVICE";
+        saveBlobToDevice(cachedBlob, resolvedFileName);
+        return;
+      }
+
+      activeDownload = true;
+      downloadBtn.disabled = true;
+      downloadBtn.textContent = "DOWNLOADING FILE...";
+      completeAlert.classList.add('hidden');
+
+      try {
+        statusTextEl.textContent = "CONNECTING TO SECURE LANE...";
+        const file = File.fromURL(MEGA_LINK);
+        await file.loadAttributes();
+
+        resolvedFileName = file.name || "Rajnish_Gallery_File";
+        totalBytes = file.size || 0;
+
+        fileNameEl.textContent = resolvedFileName;
+        fileSizeEl.textContent = totalBytes > 0 ? `${toMB(totalBytes)} MB` : "READY";
+
+        const chunks = [];
+        let loaded = 0;
+        const start = performance.now();
+        const stream = file.download();
+
+        await new Promise((resolve, reject) => {
+          stream.on('data', (chunk) => {
+            chunks.push(chunk);
+            loaded += chunk.byteLength || chunk.length || 0;
+            const elapsed = Math.max(0.1, (performance.now() - start) / 1000);
+            const speed = (loaded / (1024 * 1024)) / elapsed;
+            setProgress(loaded, totalBytes, speed, "STREAMING & DECRYPTING...");
+          });
+
+          stream.on('end', () => {
+            resolve();
+          });
+
+          stream.on('error', (err) => {
+            reject(err);
+          });
+        });
+
+        cachedBlob = new Blob(chunks, { type: "application/octet-stream" });
+        setProgress(totalBytes, totalBytes, 0, "COMPLETE // SAVE POP-UP TRIGGERED", true);
+        saveBlobToDevice(cachedBlob, resolvedFileName);
+      } catch (err) {
+        statusTextEl.textContent = "CONNECTION INTERRUPTED - CLICK BUTTON TO RETRY";
+      } finally {
+        activeDownload = false;
+        downloadBtn.disabled = false;
+        downloadBtn.textContent = "DOWNLOAD FILE NOW";
+      }
+    }
+
+    downloadBtn.addEventListener('click', () => {
+      runTransfer();
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      runTransfer();
+    });
+  </script>
+</body>
+</html>
